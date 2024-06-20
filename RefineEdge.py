@@ -26,6 +26,11 @@ def click_event(event, x, y, flags, param):
         if len(points) == 2:
             points.clear()  # Clear points when two points are already clicked
         points.append((x, y))
+        
+def lengthConverter(pixels):
+    pixelsperMM = 3.78
+    
+    return pixels / pixelsperMM 
 
 # Set the mouse callback function to the window
 cv.imshow('Processed Image', img)
@@ -40,8 +45,9 @@ while True:
         # Calculate the distance
         distance = np.sqrt((points[0][0] - points[1][0])**2 + (points[0][1] - points[1][1])**2)
         # Display the distance
+        distanceMM = lengthConverter(distance)
         midpoint = ((points[0][0] + points[1][0]) // 2, (points[0][1] + points[1][1]) // 2)
-        cv.putText(temp_img, f'{distance:.2f} pixels', midpoint, cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
+        cv.putText(temp_img, f'{distanceMM:.2f} mm', midpoint, cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
     
     for point in points:
         cv.circle(temp_img, point, 5, (255, 0, 0), -1)
